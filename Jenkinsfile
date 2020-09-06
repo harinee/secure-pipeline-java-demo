@@ -70,32 +70,6 @@ pipeline {
             }
           }
         }
-        stage('OSS License Checker') {
-          steps {
-            container('licensefinder') {
-              sh 'ls -al'
-              sh '''#!/bin/bash --login
-                      /bin/bash --login
-                      rvm use default
-                      gem install license_finder
-                      license_finder
-                    '''
-            }
-          }
-        }
-        stage('SCA') {
-          steps {
-            container('maven') {
-              sh 'mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom'
-            }
-          }
-          post {
-            success {
-              dependencyTrackPublisher artifact: 'target/bom.xml', projectId: '9110e2e4-bc2e-47b7-9967-ade239b0edf5', synchronous: false
-              archiveArtifacts allowEmptyArchive: true, artifacts: 'target/bom.xml', fingerprint: true, onlyIfSuccessful: true
-            }
-          }
-        }
       }
     }
     stage('Package') {
@@ -147,7 +121,7 @@ pipeline {
     }
     stage('Dynamic Analysis') {
       parallel {
-        stage('E2E tests') {
+        stage('Functional tests') {
           steps {
             sh 'echo "All Tests passed!!!"'
           }

@@ -25,3 +25,7 @@ hs_err_pid*
 # Trage output
 target/
 .DS_Store
+
+#IDEA Files
+.idea/
+*.iml
