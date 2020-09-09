@@ -82,7 +82,7 @@ pipeline {
     }
     stage('Artefact Analysis') {
       parallel {
-        stage('Image Scan') {
+        stage('Image Dependency Scan') {
           steps {
             container('docker-cmds') {
               sh '''#!/bin/sh
@@ -104,15 +104,8 @@ pipeline {
             }
           }
         }
-        stage('K8s Hardening') {
-          steps {
-            container('docker-cmds') {
-              sh 'docker run -i kubesec/kubesec:512c5e0 scan /dev/stdin < pod.yaml'
-            }
-          }
-        }
+       }
       }
-    }
     stage('Deploy') {
       steps {
         // TODO
