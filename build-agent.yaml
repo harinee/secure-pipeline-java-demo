@@ -28,11 +28,6 @@ spec:
       command:
         - cat
       tty: true
-    - name: licensefinder
-      image: licensefinder/license_finder
-      command:
-        - cat
-      tty: true
     - name: dockle
       image: rmkanda/dockle
       command:
