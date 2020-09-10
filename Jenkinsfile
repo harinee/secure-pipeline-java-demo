@@ -60,8 +60,10 @@ pipeline {
         }
         stage('Spot Bugs - Security') {
           steps {
-            container('maven') {
-              sh 'mvn compile spotbugs:check || exit 0'
+            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              container('maven') {
+                sh 'mvn compile spotbugs:check'
+              }
             }
           }
           post {
@@ -121,8 +123,10 @@ pipeline {
         }
         stage('DAST') {
           steps {
-            container('docker-cmds') {
-              sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t https://www.zaproxy.org/ || exit 0'
+            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+              container('docker-cmds') {
+                sh 'docker run -t owasp/zap2docker-stable zap-baseline.py -t https://www.zaproxy.org/'
+              }
             }
           }
         }
